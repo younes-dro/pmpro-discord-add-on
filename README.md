@@ -41,31 +41,51 @@ PMPro discord community addon supports any kind of member community-focused busi
 ### 18 FEATURES OF DISCORD COMMUNITY ADDON:
  1. **Member Management**
 These features are focused on managing the status and details of members in relation to their membership and Discord account.
+
  - **Feature 1**: Allow members to connect their Discord account with their Paid Memberships Pro membership account.
+
  - **Feature 2**: Update member roles when membership expires.
+
  - **Feature 3**: Update member roles when membership is canceled.
+
  -  **Feature 4**: Change roles by editing user membership in WP Manage user.
+
  - **Feature 5**: Support of Paid Memberships Pro – Cancel on Next Payment Date, ensuring roles aren't removed immediately upon cancellation.
+
 2. **Role & Access Control**
 This category involves managing and assigning roles based on membership status and levels, as well as defining default roles.
+
 - **Feature 1**: Assign roles in Discord as per membership level.
+
 - **Feature 2**: Allow admin to change or remove member roles.
+
 - **Feature 3**: Set a default role for all members upon connecting their Discord account.
+
 - **Feature 4**: Decide if members should stay in the Discord server when membership expires or is canceled.
+
 - **Feature 5**: Set a default role when membership is canceled or expires.
+
 - **Feature 6**: Support for forced Discord authentication before checkout.
+
 3. **Communication & Engagement**
 These features enhance member engagement and communication, particularly through direct messaging.
+
 - **Feature 1**: Send a direct message when membership expires.
+
 - **Feature 2**: Send a direct message when membership is canceled.
+
 - **Feature 3**: Send membership expiration warnings via direct message.
 
 
 4. **Customization & Integration**
 This category includes features that allow for customization of the plugin and its integration with other tools.
+
 - **Feature 1**: Use shortcode [discord_connect_button] to display connect/disconnect button.
+
 - **Feature 2**: Join the Discord server through authentication, with the option for a default role for new members.
+
 - **Feature 3**: Button styling feature under plugin settings.
+
 - **Feature 4**: Hide the connect button using a simple filter in the theme's functions.php or a code snippet plugin.
 
 ### DOCUMENTATION, SUPPORT
