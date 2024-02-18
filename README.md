@@ -1,135 +1,86 @@
-
 ![](https://www.expresstechsoftwares.com/wp-content/uploads/paidmembershippro_discord_addon_banner.png)
 
-  
-
-# [Unlock Exclusive Discord Access: Introducing the Free PMPro-Discord Addon — Elevate Your Community Engagement!](https://www.expresstechsoftwares.com/step-by-step-documentation-guide-on-how-to-connect-pmpro-and-discord-server-using-discord-addon/) #
-
+# [Connect Paid Memberships Pro to Discord](https://www.expresstechsoftwares.com/step-by-step-documentation-guide-on-how-to-connect-pmpro-and-discord-server-using-discord-addon/) #
 ![](https://img.shields.io/badge/build-passing-green) ![License](https://img.shields.io/badge/license-GPL--2.0%2B-red.svg)
-
-  
 
 ### Welcome to the PMPRO Discord Add On GitHub Repository
 
- ##### THE MOST TRUSTED WAY TO ADD DISCORD COMMUNITY TO A PMPro MEMBERSHIP SITE ON WORDPRESS.
-
-Paid Memberships Pro Discord Add is a complete solution to secure your discord community content and create a seamless membership discord community experience on WordPress.
-With over 18 features to share protected content to discord community server, advanced membership-discord-role management, and built-in join /cancel /expiry role assignment, we provide you with everything you need to create an efficient and user-friendly membership discord community server.
-
-  
+This add-on enables connecting your PMPRO enabled website to your discord server. Now you can add/remove PMPRO members directly to your discord server, assign roles according to the membership levels, unassign roles when member expire or cancel, change role when member change membership.
 
 # [Step By Step guide on how to set-up plugin](https://www.expresstechsoftwares.com/step-by-step-documentation-guide-on-how-to-connect-pmpro-and-discord-server-using-discord-addon/)
 
+
 ## Installation
-
 - You can find the plugin inside the PMPRO settings Add-ons and click install from there
-
 - OR Upload the `pmpro-discord` folder to the `/wp-content/plugins/` directory.
+- Activate the plugin through the 'Installed Plugins' page in WordPress admin.
 
-- Activate the plugin through the 'Installed Plugins' page in WordPress admin.  
+## Connecting the plugin to your Discord Server.
+- Inside WP Admin, you will find Discord Settings sub-menu under top-level PMPRRO Memberships menu in the left hand side.
+- Login to your dsicord account and open this url: https://discord.com/developers/applications
+- Click Top right button "New Appliaction", and name your Application.
+- New screen will load, you need to look at left hand side and see "oAuth".
+- See right hand side, you will see "CLIENT ID and CLIENT SECRET" values copy them.
+- Open the discord settings page.
+- Paste the copied ClientID and ClientSecret.
+- If the PMPRO is already setup you will see redirect URL inside plugin settings. Just copy it and paste into Discord "Redirect URL" then save settings in Discord.
+- Now again see inside discord left hand side menu, you will see "Bot" page link.
+- This is very important, you need to name your bot and click generate, this will generate "Bot Token".
+- Copy the "Bot Token" and paste into "Bot Token" setting of Discord aa-on Plugin.
+- Now the last and most important setting, "Server ID".
+- - Open https://discord.com/ and go inside your server.
+- - Enable Developer mode by going into Advanced setting of your account.
+- - Then you should right click on your server name and you will see "Copy ID"
+- - Copy and paste into "Guild ID" Settings
+- Now you will see "Connect your bot" button on your plugin settings page.
+- Click Connect your bot button and this will take you to the Discord authorisation page.
+- Here you need to select the Server of which Guild ID you just did copy in above steps.
+- Once successfully connect you should see Bot Authorized screen.
+- Open again the discord server settings and see Roles menu.
+- Please make sure your bot role has the highest priority among all other roles in your discord server roles settings otherwise you will see 5000:Missing Access Error in your plugin error logs.
 
-# BUILT FOR YOUR PRIVATE DISCORD COMMUNITY OF WORDPRESS MEMBERSHIP SITE
-### BUILT FOR YOUR PRIVATE DISCORD COMMUNITY OF WORDPRESS MEMBERSHIP SITE
-PMPro discord community addon supports any kind of member community-focused business or organization. With over 6 years of experience working with creators like you, this plugin delivers on what you need today and in the future. Select a use case to learn more about how we specialize in supporting your unique business:
+## Some features
+- Allow any member to connect their discord account with your PaidMebershipPro membership website.
+- Members will be assigned roles in discord as per their membership level.
+- Members roles can be changed/remove from the admin of the site.
+- Members roles will be updated when membership expires.
+- Members roles will be updated when membership cancelled.
+- Admin can decide what default role to be given to all members upon connecting their discord to their membership account.
+- Admin can decide if membership should stay in their discord server when membership expires or cancelled.
+- Admin can decide what default role to be assigned when membership cancelled or expire.
+- Admin can change role by changing the membership by editng user insider WP Manage user.
+- Send a Direct message to discord members when their membership has expired. (Only work when allow none member is set to YES and Direct Message advanced setting is set ENABLED)
+- Send a Direct message to discord members when their membership is cancelled. (Only work when allow none member is set to YES and Direct Message advanced setting is set ENABLED)
+- Send membership expiration warnings Direct Message when membership is about to expire (Default 7 days before)
+- Short code [discord_connect_button] can be used on any page to display connect/disconnect button.
+- Using the shortcode [discord_connect_button] on any page, anyone can join the website discord server by authentication via member discord account. New members will get `default` role if selected in the setting.
+- Button styling feature under the plugin settings.
+- Support of Paid Memberships Pro - Cancel on Next Payment Date. So the member role wont get removed immediately upon cancel.
+- Support for forced discord authentication before checkout.
 
- 1. **Exclusive Community Access** : Members are granted access to a private Discord server or specific channels based on their membership level, creating a sense of exclusivity and privilege.
- 2. **Segmented Communication Channels** : Different Discord channels are set up for various courses and topics, allowing members to engage in focused discussions and network with peers sharing similar interests.
- 3. **Direct Support and Q&A Sessions** : The platform hosts regular Q&A sessions and support discussions on Discord, offering direct access to instructors and fostering a supportive learning environment.
- 4. **Real-Time Notifications and Updates** : Members receive instant updates about new course releases, webinars, and events directly through Discord, enhancing communication efficiency.
- 5. **Community Building** : The interactive nature of Discord, including voice and video chat options, fosters a stronger community bond, encouraging members to actively participate and share their experiences.
+- Hide the connect button using the simple filter: ets_pmpro_show_connect_button_on_profile
+`add_filter('ets_pmpro_show_connect_button_on_profile', '__return_false' );`
+Adding above code line in functions.php of theme or using code snippet plugin.
 
-### 18 FEATURES OF DISCORD COMMUNITY ADDON:
- 1. **Member Management**
-These features are focused on managing the status and details of members in relation to their membership and Discord account.
-
- - **Feature 1**: Allow members to connect their Discord account with their Paid Memberships Pro membership account.
-
- - **Feature 2**: Update member roles when membership expires.
-
- - **Feature 3**: Update member roles when membership is canceled.
-
- -  **Feature 4**: Change roles by editing user membership in WP Manage user.
-
- - **Feature 5**: Support of Paid Memberships Pro – Cancel on Next Payment Date, ensuring roles aren't removed immediately upon cancellation.
-
-2. **Role & Access Control**
-This category involves managing and assigning roles based on membership status and levels, as well as defining default roles.
-
-- **Feature 1**: Assign roles in Discord as per membership level.
-
-- **Feature 2**: Allow admin to change or remove member roles.
-
-- **Feature 3**: Set a default role for all members upon connecting their Discord account.
-
-- **Feature 4**: Decide if members should stay in the Discord server when membership expires or is canceled.
-
-- **Feature 5**: Set a default role when membership is canceled or expires.
-
-- **Feature 6**: Support for forced Discord authentication before checkout.
-
-3. **Communication & Engagement**
-These features enhance member engagement and communication, particularly through direct messaging.
-
-- **Feature 1**: Send a direct message when membership expires.
-
-- **Feature 2**: Send a direct message when membership is canceled.
-
-- **Feature 3**: Send membership expiration warnings via direct message.
-
-
-4. **Customization & Integration**
-This category includes features that allow for customization of the plugin and its integration with other tools.
-
-- **Feature 1**: Use shortcode [discord_connect_button] to display connect/disconnect button.
-
-- **Feature 2**: Join the Discord server through authentication, with the option for a default role for new members.
-
-- **Feature 3**: Button styling feature under plugin settings.
-
-- **Feature 4**: Hide the connect button using a simple filter in the theme's functions.php or a code snippet plugin.
-
-### DOCUMENTATION, SUPPORT
-- Access free support here on https://wordpress.org/support/plugin/pmpro-discord-add-on/ 
-- [Steps Connecting Discord Addon](https://www.expresstechsoftwares.com/step-by-step-documentation-guide-on-how-to-connect-pmpro-and-discord-server-using-discord-addon/). 
-
-# Pro Version Addon Features for PMPro-Discord
-  **A. Enhanced Role Management**
-- **Multiple Membership Discord Roles**: The Pro version of the PMPro-Discord Addon takes role management to the next level. It allows for the assignment of multiple Discord roles based on different membership levels. This feature is especially useful for communities that offer a range of membership tiers, each with its unique benefits and access levels. By assigning multiple roles, community managers can create a more dynamic and tiered community structure, providing members with access to exclusive channels and content based on their specific subscription tier.
-
-**B. Premium Support Services**
-- **Email Support**: Subscribers of the Pro version gain access to dedicated email support. This service ensures that any technical issues or questions related to the PMPro-Discord integration are promptly addressed by a team of experts. This level of support is crucial for maintaining a seamless and uninterrupted community experience, particularly for large communities where quick resolution of issues is paramount.
-
-**C. Custom Integration Services**
-- **Free Consultation for Custom Discord API Integrations**: A standout feature of the Pro version is the offer of a free consultation for developing custom Discord API integrations. This service is invaluable for community managers looking to customize their Discord experience to fit unique community needs. Whether it's developing specialized bots, automating specific community functions, or integrating with other software, the Pro version opens up a world of possibilities for bespoke community solutions. This feature not only adds tremendous value to the addon but also demonstrates a commitment to accommodating the specific needs of diverse communities.
-
-[BUY NOW](https://www.expresstechsoftwares.com/checkout/?add-to-cart=19749&quantity=1&utm_source=ets_github-discord&utm_medium=ets_github_link&utm_campaign=ets_github_discord-pro&utm_content=buy_now)
+## Solution of Missing Access Error
+- Inside the log tab you will see "50001:Missing Access", which is happening because the new BOT role need to the TOP priroty among the other roles.
+- - The new created BOT will add a ROLE with the same name as it is given to the BOT itself.
+- So, Go inside the "Server Settings" from the TOP left menu.
+- Go inside the "Roles" and Drag and Drop the new BOT over to the TOP all other roles.
+- Do not for forget to save the roles settings
 
 # Fequently Asked Questions
-
 - I'm getting an error in error Log 'Missing Access'
-
--  - Please make sure your bot role has the highest priority among all other roles in your discord server roles settings. Watch this video https://youtu.be/v7lxB_Bvlv4?t=363
-
+- - Please make sure your bot role has the highest priority among all other roles in your discord server roles settings. Watch this video https://youtu.be/v7lxB_Bvlv4?t=363
 - Role Settings is not appearing.
-
--  - Clear browser cache, to uninstall and install again.
-
--  - Try the disabling cache
-
--  - Try Disabling other plugins, there may be any conflict with another plugin.
-
-- Members are not being added spontaneously.
-
--  - Due to the nature of Discord API, we have to use schedules to precisely control API calls, that why actions are delayed.
-
+- - Clear browser cache, to uninstall and install again.
+- - Try the disabling cache
+- - Try Disabling other plugins, there may be any conflict with another plugin.
+- Members are not being added spontaneously. 
+- - Due to the nature of Discord API, we have to use schedules to precisely control API calls, that why actions are delayed. 
 - Member roles are not being assigned spontaneously.
-
--  - Due to the nature of Discord API, we have to use schedules to precisely control API calls, that why actions are delayed.
-
+- - Due to the nature of Discord API, we have to use schedules to precisely control API calls, that why actions are delayed. 
 - Some members are not getting their role and there is no error in the log.
-
--  - Sometimes discord API behaves weirdly, It is suggested to TRY again OR use another discord account.
-
+- - Sometimes discord API behaves weirdly, It is suggested to TRY again OR use another discord account.
 - After expiry or member cancellation the roles are not being removed
-
--  - It is seen in discord API that it return SUCCESS but does not work sometimes. It is suggested to manually adjust roles via PMPPRO->Members table.
+- - It is seen in discord API that it return SUCCESS but does not work sometimes. It is suggested to manually adjust roles via PMPPRO->Members table.
