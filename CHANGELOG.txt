@@ -1,3 +1,6 @@
+= 1.2.14 =
+- Update plugin title
+
 = 1.2.13 =
 - Update WordPress version 6.4
 

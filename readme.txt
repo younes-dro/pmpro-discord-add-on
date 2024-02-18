@@ -1,4 +1,4 @@
-=== Connect Paid Memberships Pro to Discord ===
+=== Unlock Exclusive Discord Access: Introducing the Free PMPro-Discord Addon — Elevate Your Community Engagement! ===
 Contributors: expresstechsoftware, webbdeveloper, sunnysoni, strangerstudios 
 Tags: Discord, Talk, Video Chat, Hang Out, Friends, Memberships, discord role management
 Donate link: https://paypal.me/supportets
@@ -7,7 +7,7 @@ Author: ExpressTech Software Solutions Pvt. Ltd.
 Requires at least: 4.7
 Tested up to: 6.4
 Requires PHP: 7.0
-Stable tag: 1.2.13
+Stable tag: 1.2.14
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
