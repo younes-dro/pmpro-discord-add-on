@@ -1,3 +1,6 @@
+= 1.2.16 =
+- Deprecated the pmpro_stripe_subscription_deleted hook in Paid Memberships Pro. Consequently, the function ets_pmpro_discord_stripe_subscription_deleted, acting as its callback, has been marked for removal. 
+
 = 1.2.15 =
 - Update Pro link
 
