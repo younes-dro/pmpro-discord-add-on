@@ -7,7 +7,7 @@ Author: ExpressTech Software Solutions Pvt. Ltd.
 Requires at least: 4.7
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 1.2.17
+Stable tag: 1.2.18
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,15 +95,10 @@ Email Support:</strong> Subscribers of the Pro version gain access to dedicated 
 * <strong>C. Custom Integration Services
 Free Consultation for Custom Discord API Integrations:</strong> A standout feature of the Pro version is the offer of a free consultation for developing custom Discord API integrations. This service is invaluable for community managers looking to customize their Discord experience to fit unique community needs. Whether it's developing specialized bots, automating specific community functions, or integrating with other software, the Pro version opens up a world of possibilities for bespoke community solutions. This feature not only adds tremendous value to the addon but also demonstrates a commitment to accommodating the specific needs of diverse communities.
 
-== <strong> installation</strong> ==
+== <strong> Installation</strong> ==
 
 = Download, Install and Activate! =
 
-1. Go to Plugins > Add New to find and install PMPRO discord Addon.
-2. Or, download the latest version of the plugin, then go to Plugins > Add New and click the "Upload Plugin" button to upload your .zip file.
-3. Activate the plugin.
-
-= Download, Install and Activate! =
 1. Go to Plugins > Add New to find and install PMPRO discord Addon.
 2. Or, download the latest version of the plugin, then go to Plugins > Add New and click the "Upload Plugin" button to upload your .zip file.
 3. Activate the plugin.
