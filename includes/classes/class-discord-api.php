@@ -35,7 +35,7 @@ class PMPro_Discord_API {
 
 		add_action( 'wp_ajax_ets_pmpro_discord_member_table_run_api', array( $this, 'ets_pmpro_discord_member_table_run_api' ) );
 
-		add_action( 'pmpro_stripe_subscription_deleted', array( $this, 'ets_pmpro_discord_stripe_subscription_deleted' ), 10, 1 );
+		// add_action( 'pmpro_stripe_subscription_deleted', array( $this, 'ets_pmpro_discord_stripe_subscription_deleted' ), 10, 1 );
 
 		add_action( 'pmpro_subscription_payment_failed', array( $this, 'ets_pmpro_discord_subscription_payment_failed' ), 10, 1 );
 
@@ -1034,6 +1034,8 @@ class PMPro_Discord_API {
 	/**
 	 * Manage user roles on cancel payment
 	 *
+	 * This function is marked for removal
+	 *
 	 * @param INT $user_id
 	 */
 	public function ets_pmpro_discord_stripe_subscription_deleted( $user_id ) {
@@ -1086,7 +1088,7 @@ class PMPro_Discord_API {
 	 * @return NONE
 	 */
 	public function ets_pmpro_discord_change_discord_role_from_pmpro( $level_id, $user_id, $cancel_level ) {
-    $is_schedule = true;
+		$is_schedule = true;
 		$is_schedule = apply_filters( 'ets_pmpro_discord_schedule_change_renew_api_calls', $is_schedule );
 		$this->ets_pmpro_discord_set_member_roles( $user_id, false, false, $is_schedule );
 	}
