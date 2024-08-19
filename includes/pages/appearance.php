@@ -4,6 +4,8 @@ $ets_pmpro_btn_disconnect_color                          = sanitize_text_field( 
 $btn_text                        	= sanitize_text_field( trim( get_option( 'ets_pmpro_discord_loggedout_btn_text' ) ) );
 $loggedin_btn_text                  = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_loggedin_btn_text' ) ) );
 $ets_pmpro_disconnect_btn_text                  = sanitize_text_field( trim( get_option( 'ets_pmpro_disconnect_btn_text' ) ) );
+$role_will_assign_text               = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_role_will_assign_text' ) ) );
+$role_assigned_text                  = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_role_assigned_text' ) ) );
 $current_screen = ets_pmpro_discord_get_current_screen_url();
 ?>
 <form method="post" action="<?php echo get_site_url().'/wp-admin/admin-post.php' ?>">
@@ -40,6 +42,18 @@ $current_screen = ets_pmpro_discord_get_current_screen_url();
 		<th scope="row"><?php echo __( 'Text on the Disconnect Button', 'pmpro-discord-add-on' ); ?></th>
 		<td> <fieldset>
 		<input name="ets_pmpro_disconnect_btn_text" type="text" id="ets_pmpro_disconnect_btn_text" value="<?php if ( $ets_pmpro_disconnect_btn_text ) { echo $ets_pmpro_disconnect_btn_text; } ?>">
+		</fieldset></td> 
+	</tr>
+	<tr>
+		<th scope="row"><?php echo __( 'Text for Roles Will Be Assigned Message', 'pmpro-discord-add-on' ); ?></th>
+		<td> <fieldset>
+		<textarea rows="5" cols="50" name="ets_pmpro_role_will_assign_text" id="ets_pmpro_role_will_assign_text"><?php if ( $role_will_assign_text ) { echo $role_will_assign_text; } ?></textarea>
+		</fieldset></td> 
+	</tr>	
+	<tr>
+		<th scope="row"><?php echo __( 'Text for Assigned Roles Message', 'pmpro-discord-add-on' ); ?></th>
+		<td> <fieldset>
+		<textarea rows="5" cols="50" name="ets_pmpro_role_assigned_text" id="ets_pmpro_role_assigned_text"><?php if ( $role_assigned_text ) { echo $role_assigned_text; } ?></textarea>
 		</fieldset></td> 
 	</tr>	
 	</tbody>
