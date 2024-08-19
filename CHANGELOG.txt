@@ -1,3 +1,7 @@
+= 1.2.19 =
+- Added editable text fields for the messages "Following Roles was assigned to you in Discord:" and "Following Roles will be assigned to you in Discord:" in the Appearance settings.
+- Made the role assignment messages customizable via the plugin settings.
+
 = 1.2.18 =
 - Update readme file
 
