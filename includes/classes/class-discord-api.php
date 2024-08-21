@@ -615,8 +615,9 @@ class PMPro_Discord_API {
 						if ( array_key_exists( 'access_token', $res_body ) ) {
 							$access_token = sanitize_text_field( trim( $res_body['access_token'] ) );
 							$user_body    = $this->get_discord_current_user( $access_token );
-							// $discord_user_email = $user_body['email'];
-							$discord_user_email = ( ! empty( $user_body['email'] ) ) ? $user_body['email'] : $user_body['id'] . '@placeholder.email';
+							$temporary_email = $user_body['id'] . '@placeholder.email';
+							$discord_user_email = ( ! empty( $user_body['email'] ) ) ? $user_body['email'] : $temporary_email;
+
 							$password           = wp_generate_password( 12, true, false );
 							if ( email_exists( $discord_user_email ) ) {
 								$current_user = get_user_by( 'email', $discord_user_email );
