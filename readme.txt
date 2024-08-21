@@ -7,7 +7,7 @@ Author: ExpressTech Software Solutions Pvt. Ltd.
 Requires at least: 4.7
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 1.2.19
+Stable tag: 1.2.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
