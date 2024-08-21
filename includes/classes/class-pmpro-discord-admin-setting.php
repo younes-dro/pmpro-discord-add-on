@@ -17,6 +17,9 @@ class Ets_Pmpro_Admin_Setting {
 
 		// Add new button in pmpro profile
 		add_shortcode( 'discord_connect_button', array( $this, 'ets_pmpro_discord_add_connect_discord_button' ) );
+		// Add new shortcode to fetch and display the Discord username, account name, and roles linked to a user's membership
+		add_shortcode( 'discord_user_info', array( $this, 'ets_pmpro_discord_display_user_info' ) );
+
 
 		add_action( 'pmpro_show_user_profile', array( $this, 'ets_pmpro_show_discord_button' ) );
 
@@ -108,6 +111,9 @@ class Ets_Pmpro_Admin_Setting {
 		$loggedout_btn_text             = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_loggedout_btn_text' ) ) );
 		$loggedin_btn_text              = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_loggedin_btn_text' ) ) );
 		$ets_pmpro_disconnect_btn_text  = sanitize_text_field( trim( get_option( 'ets_pmpro_disconnect_btn_text' ) ) );
+		$role_will_assign_text          = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_role_will_assign_text' ) ) );
+		$role_assigned_text             = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_role_assigned_text' ) ) );
+		
 		if ( $btn_color == '' || empty( $btn_color ) ) {
 			$btn_color = '#77a02e';
 		}
@@ -151,7 +157,7 @@ class Ets_Pmpro_Admin_Setting {
 				$pmpro_connecttodiscord_btn .= '<style>.pmpro-btn-disconnect{background-color: ' . $ets_pmpro_btn_disconnect_color . ';}</style><a href="#" class="ets-btn pmpro-btn-disconnect" id="pmpro-disconnect-discord" data-user-id="' . esc_attr( $user_id ) . '">' . esc_html( $ets_pmpro_disconnect_btn_text ) . '<i class="fab fa-discord"></i></a>';
 				$pmpro_connecttodiscord_btn .= '<span class="ets-spinner"></span><p class="ets_assigned_role">';
 				if ( $mapped_role_name || $default_role_name ) {
-					$pmpro_connecttodiscord_btn .= esc_html__( 'Following Roles was assigned to you in Discord: ', 'pmpro-discord-add-on' );
+					$pmpro_connecttodiscord_btn .= $role_assigned_text . ' ';
 				}
 				if ( $mapped_role_name ) {
 					$pmpro_connecttodiscord_btn .= ets_pmpro_discord_allowed_html( $mapped_role_name );
@@ -173,7 +179,7 @@ class Ets_Pmpro_Admin_Setting {
 				$pmpro_connecttodiscord_btn .= '<a href="?action=discord-login&url=' . $current_url . '" class="pmpro-btn-connect ets-btn" >' . esc_html( $btn_text ) . '<i class="fab fa-discord"></i></a>';
 				$pmpro_connecttodiscord_btn .= '<p class="ets_assigned_role">';
 				if ( $mapped_role_name || $default_role_name ) {
-					$pmpro_connecttodiscord_btn .= esc_html__( 'Following Roles will be assigned to you in Discord: ', 'pmpro-discord-add-on' );
+					$pmpro_connecttodiscord_btn .= $role_will_assign_text. ' ';
 				}
 				if ( $mapped_role_name ) {
 					$pmpro_connecttodiscord_btn .= ets_pmpro_discord_allowed_html( $mapped_role_name );
@@ -191,6 +197,60 @@ class Ets_Pmpro_Admin_Setting {
 		return $pmpro_connecttodiscord_btn;
 
 	}
+
+	/**
+	 * Fetch and display the Discord username, WordPress account name, and roles linked to a user's membership.
+	 *
+	 * @return string|null The formatted HTML string containing the Discord username, WordPress account name, and roles.
+	 */
+	public function ets_pmpro_discord_display_user_info(){
+		$user_id = get_current_user_id();
+		if ( ! $user_id ) {
+			return 'You must be logged in to view this information.';
+		}
+		wp_enqueue_style( 'ets_pmpro_add_discord_style' );
+
+		$discord_user_name 				= sanitize_text_field( trim( get_user_meta( $user_id, '_ets_pmpro_discord_username', true ) ) );
+		$wp_account_name 				= get_the_author_meta('display_name', $user_id);
+		$all_roles                      = unserialize( get_option( 'ets_pmpro_discord_all_roles' ) );
+		$roles_color 					= unserialize( get_option( 'ets_pmpro_discord_roles_color' ) );
+		$default_role 					= sanitize_text_field( trim( get_option( '_ets_pmpro_discord_default_role_id' ) ) );
+		$ets_pmpor_discord_role_mapping = json_decode( get_option( 'ets_pmpor_discord_role_mapping' ), true );
+		$curr_level_id 					= ets_pmpro_discord_get_current_level_id( $user_id );
+
+		if ( substr( $discord_user_name,-2) === '#0'){
+			$discord_user_name = substr( $discord_user_name, 0, -2 );
+		}
+		$mapped_role_name = '';
+
+		if ( $curr_level_id && is_array( $all_roles ) ) {
+			if ( is_array( $ets_pmpor_discord_role_mapping ) && array_key_exists( 'pmpro_level_id_' . $curr_level_id, $ets_pmpor_discord_role_mapping ) ) {
+				$mapped_role_id = $ets_pmpor_discord_role_mapping[ 'pmpro_level_id_' . $curr_level_id ];
+				if ( array_key_exists( $mapped_role_id, $all_roles ) ) {
+					$mapped_role_name = '<span class="discord-role"> <i style="background-color:#' . dechex( $roles_color[ $mapped_role_id ] ) . '"></i>' . $all_roles[ $mapped_role_id ] . '</span>';
+				}
+			}
+		}
+
+		$default_role_name = '';
+		if ( $default_role != 'none' && is_array( $all_roles ) && array_key_exists( $default_role, $all_roles ) ) {
+			$default_role_name = '<span class="discord-role"> <i style="background-color:#' . dechex( $roles_color[ $default_role ] ) . '"></i>' . $all_roles[ $default_role ] . '</span>';
+		}
+
+		$output = '<div class="discord-user-info">';
+		$output .= '<p><strong>Account Name:</strong> ' . esc_html($wp_account_name) . '</p>';
+		$output .= '<p><strong>Discord Username:</strong> ' . esc_html($discord_user_name) . '</p>';
+		if ( $mapped_role_name ) {
+			$output .= '<p><strong>Assigned Discord Role:</strong> ' . ets_pmpro_discord_allowed_html( $mapped_role_name ) . '</p>';
+		}
+		if ( $default_role_name ) {
+			$output .= '<p><strong>Default Discord Role:</strong> ' . ets_pmpro_discord_allowed_html( $default_role_name ) . '</p>';
+		}
+		$output .= '</div>';
+
+		return $output;
+	}
+
 
 	/**
 	 * Show status of PMPro connection with user
@@ -240,6 +300,8 @@ class Ets_Pmpro_Admin_Setting {
 			$member_discord_login           = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_login_with_discord' ) ) );
 			$btn_color                      = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_btn_color' ) ) );
 			$btn_text                       = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_loggedout_btn_text' ) ) );
+			$role_will_assign_text          = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_role_will_assign_text' ) ) );
+			$role_assigned_text             = sanitize_text_field( trim( get_option( 'ets_pmpro_discord_role_assigned_text' ) ) );
 			echo '<style>.pmpro-btn-connect{background-color: ' . $btn_color . ';}</style>';
 			if ( $member_discord_login ) {
 				$curr_level_id     = $_GET['level'] ?? '';
@@ -260,7 +322,7 @@ class Ets_Pmpro_Admin_Setting {
 				echo '<a href="?action=discord-login&fromcheckout=1&url=' . $current_url . '" class="pmpro-btn-connect ets-btn" >' . esc_html( $btn_text ) . '<i class="fab fa-discord"></i></a>';
 				$pmpro_connecttodiscord_btn = '';
 				if ( $mapped_role_name ) {
-					$pmpro_connecttodiscord_btn .= '<p class="ets_assigned_role">' . esc_html__( 'Following Roles will be assigned to you in Discord: ', 'pmpro-discord-add-on' );
+					$pmpro_connecttodiscord_btn .= '<p class="ets_assigned_role">' . $role_will_assign_text. ' ';
 					$pmpro_connecttodiscord_btn .= esc_html( $mapped_role_name );
 					if ( $default_role_name ) {
 						$pmpro_connecttodiscord_btn .= ', ' . esc_html( $default_role_name );
@@ -351,9 +413,10 @@ class Ets_Pmpro_Admin_Setting {
 	 * @return NONE
 	 */
 	public function ets_pmpro_discord_add_script() {
+		$min = ( WP_DEBUG) ? '' : '.min';
 		wp_register_style(
 			'ets_pmpro_add_discord_style',
-			ETS_PMPRO_DISCORD_URL . 'assets/css/ets-pmpro-discord-style.min.css',
+			ETS_PMPRO_DISCORD_URL . 'assets/css/ets-pmpro-discord-style' . $min . '.css',
 			false,
 			ETS_PMPRO_VERSION
 		);
@@ -783,7 +846,7 @@ class Ets_Pmpro_Admin_Setting {
 	}
 
 	/**
-	 * Save apearance settings
+	 * Save appearance settings
 	 *
 	 * @param NONE
 	 * @return NONE
@@ -799,6 +862,8 @@ class Ets_Pmpro_Admin_Setting {
 		$ets_pmpro_loggedin_btn_text    = isset( $_POST['ets_pmpro_loggedin_btn_text'] ) && $_POST['ets_pmpro_loggedin_btn_text'] != '' ? sanitize_text_field( trim( $_POST['ets_pmpro_loggedin_btn_text'] ) ) : 'Connect To Discord';
 		$ets_pmpro_loggedout_btn_text   = isset( $_POST['ets_pmpro_loggedout_btn_text'] ) && $_POST['ets_pmpro_loggedout_btn_text'] != '' ? sanitize_text_field( trim( $_POST['ets_pmpro_loggedout_btn_text'] ) ) : 'Login With Discord';
 		$ets_pmpro_disconnect_btn_text  = $_POST['ets_pmpro_disconnect_btn_text'] ? sanitize_text_field( trim( $_POST['ets_pmpro_disconnect_btn_text'] ) ) : 'Disconnect From Discord';
+		$ets_pmpro_role_assigned_text   = isset( $_POST['ets_pmpro_role_assigned_text'] ) && $_POST['ets_pmpro_role_assigned_text'] != '' ? sanitize_textarea_field( trim( $_POST['ets_pmpro_role_assigned_text'] ) ) : 'Following Roles was assigned to you in Discord:';
+		$ets_pmpro_role_will_assign_text = isset( $_POST['ets_pmpro_role_will_assign_text'] ) && $_POST['ets_pmpro_role_will_assign_text'] != '' ? sanitize_textarea_field( trim( $_POST['ets_pmpro_role_will_assign_text'] ) ) : 'Following Roles will be assigned to you in Discord:';
 
 		if ( isset( $_POST['apr_submit'] ) ) {
 
@@ -818,6 +883,12 @@ class Ets_Pmpro_Admin_Setting {
 				if ( $ets_pmpro_disconnect_btn_text ) {
 					update_option( 'ets_pmpro_disconnect_btn_text', $ets_pmpro_disconnect_btn_text );
 				}
+				if ( $ets_pmpro_role_assigned_text ) {
+					update_option( 'ets_pmpro_discord_role_assigned_text', $ets_pmpro_role_assigned_text );
+				}
+				if ( $ets_pmpro_role_will_assign_text ) {
+					update_option( 'ets_pmpro_discord_role_will_assign_text', $ets_pmpro_role_will_assign_text );
+				}
 				$message      = 'Your settings are saved successfully.';
 				$pre_location = $_POST['referrer'] . '&save_settings_msg=' . $message . '#ets_pmpro_appearance';
 				wp_safe_redirect( $pre_location );
@@ -825,6 +896,7 @@ class Ets_Pmpro_Admin_Setting {
 		}
 
 	}
+
 	/**
 	 * Send mail to support form current user
 	 *

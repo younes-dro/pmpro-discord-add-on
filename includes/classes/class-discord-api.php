@@ -613,15 +613,18 @@ class PMPro_Discord_API {
 					$res_body = json_decode( wp_remote_retrieve_body( $response ), true );
 					if ( is_array( $res_body ) ) {
 						if ( array_key_exists( 'access_token', $res_body ) ) {
-							$access_token       = sanitize_text_field( trim( $res_body['access_token'] ) );
-							$user_body          = $this->get_discord_current_user( $access_token );
-							$discord_user_email = $user_body['email'];
+							$access_token = sanitize_text_field( trim( $res_body['access_token'] ) );
+							$user_body    = $this->get_discord_current_user( $access_token );
+							$temporary_email = $user_body['id'] . '@placeholder.email';
+							$discord_user_email = ( ! empty( $user_body['email'] ) ) ? $user_body['email'] : $temporary_email;
+
 							$password           = wp_generate_password( 12, true, false );
 							if ( email_exists( $discord_user_email ) ) {
 								$current_user = get_user_by( 'email', $discord_user_email );
 								$user_id      = $current_user->ID;
 							} else {
 								$user_id = wp_create_user( $discord_user_email, $password, $discord_user_email );
+								add_user_meta( $user_id, 'email_needs_update', true );
 								wp_new_user_notification( $user_id, null, $password );
 							}
 							$this->catch_discord_auth_callback( $res_body, $user_id );
