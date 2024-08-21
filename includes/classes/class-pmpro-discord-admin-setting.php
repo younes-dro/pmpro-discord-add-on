@@ -17,6 +17,9 @@ class Ets_Pmpro_Admin_Setting {
 
 		// Add new button in pmpro profile
 		add_shortcode( 'discord_connect_button', array( $this, 'ets_pmpro_discord_add_connect_discord_button' ) );
+		// Add new shortcode to fetch and display the Discord username, account name, and roles linked to a user's membership
+		add_shortcode( 'discord_user_info', array( $this, 'ets_pmpro_discord_display_user_info' ) );
+
 
 		add_action( 'pmpro_show_user_profile', array( $this, 'ets_pmpro_show_discord_button' ) );
 
@@ -196,6 +199,60 @@ class Ets_Pmpro_Admin_Setting {
 	}
 
 	/**
+	 * Fetch and display the Discord username, WordPress account name, and roles linked to a user's membership.
+	 *
+	 * @return string|null The formatted HTML string containing the Discord username, WordPress account name, and roles.
+	 */
+	public function ets_pmpro_discord_display_user_info(){
+		$user_id = get_current_user_id();
+		if ( ! $user_id ) {
+			return 'You must be logged in to view this information.';
+		}
+		wp_enqueue_style( 'ets_pmpro_add_discord_style' );
+
+		$discord_user_name 				= sanitize_text_field( trim( get_user_meta( $user_id, '_ets_pmpro_discord_username', true ) ) );
+		$wp_account_name 				= get_the_author_meta('display_name', $user_id);
+		$all_roles                      = unserialize( get_option( 'ets_pmpro_discord_all_roles' ) );
+		$roles_color 					= unserialize( get_option( 'ets_pmpro_discord_roles_color' ) );
+		$default_role 					= sanitize_text_field( trim( get_option( '_ets_pmpro_discord_default_role_id' ) ) );
+		$ets_pmpor_discord_role_mapping = json_decode( get_option( 'ets_pmpor_discord_role_mapping' ), true );
+		$curr_level_id 					= ets_pmpro_discord_get_current_level_id( $user_id );
+
+		if ( substr( $discord_user_name,-2) === '#0'){
+			$discord_user_name = substr( $discord_user_name, 0, -2 );
+		}
+		$mapped_role_name = '';
+
+		if ( $curr_level_id && is_array( $all_roles ) ) {
+			if ( is_array( $ets_pmpor_discord_role_mapping ) && array_key_exists( 'pmpro_level_id_' . $curr_level_id, $ets_pmpor_discord_role_mapping ) ) {
+				$mapped_role_id = $ets_pmpor_discord_role_mapping[ 'pmpro_level_id_' . $curr_level_id ];
+				if ( array_key_exists( $mapped_role_id, $all_roles ) ) {
+					$mapped_role_name = '<span class="discord-role"> <i style="background-color:#' . dechex( $roles_color[ $mapped_role_id ] ) . '"></i>' . $all_roles[ $mapped_role_id ] . '</span>';
+				}
+			}
+		}
+
+		$default_role_name = '';
+		if ( $default_role != 'none' && is_array( $all_roles ) && array_key_exists( $default_role, $all_roles ) ) {
+			$default_role_name = '<span class="discord-role"> <i style="background-color:#' . dechex( $roles_color[ $default_role ] ) . '"></i>' . $all_roles[ $default_role ] . '</span>';
+		}
+
+		$output = '<div class="discord-user-info">';
+		$output .= '<p><strong>Account Name:</strong> ' . esc_html($wp_account_name) . '</p>';
+		$output .= '<p><strong>Discord Username:</strong> ' . esc_html($discord_user_name) . '</p>';
+		if ( $mapped_role_name ) {
+			$output .= '<p><strong>Assigned Discord Role:</strong> ' . ets_pmpro_discord_allowed_html( $mapped_role_name ) . '</p>';
+		}
+		if ( $default_role_name ) {
+			$output .= '<p><strong>Default Discord Role:</strong> ' . ets_pmpro_discord_allowed_html( $default_role_name ) . '</p>';
+		}
+		$output .= '</div>';
+
+		return $output;
+	}
+
+
+	/**
 	 * Show status of PMPro connection with user
 	 *
 	 * @param NONE
@@ -356,9 +413,10 @@ class Ets_Pmpro_Admin_Setting {
 	 * @return NONE
 	 */
 	public function ets_pmpro_discord_add_script() {
+		$min = ( WP_DEBUG) ? '' : '.min';
 		wp_register_style(
 			'ets_pmpro_add_discord_style',
-			ETS_PMPRO_DISCORD_URL . 'assets/css/ets-pmpro-discord-style.min.css',
+			ETS_PMPRO_DISCORD_URL . 'assets/css/ets-pmpro-discord-style' . $min . '.css',
 			false,
 			ETS_PMPRO_VERSION
 		);

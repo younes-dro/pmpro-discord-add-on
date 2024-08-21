@@ -311,7 +311,7 @@ function ets_pmpro_disocrd_get_rich_embed_message ( $message ){
 
 function ets_pmpro_discord_allowed_html( $html_message ) {
 	$allowed_html = array(
-		'span' => array(),
+		'span' => array( 'class' =>array()),
 		'i' => array(
 			'style' => array()
 		)

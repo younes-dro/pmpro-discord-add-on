@@ -27,14 +27,23 @@ $current_screen = ets_pmpro_discord_get_current_screen_url();
 <?php wp_nonce_field( 'save_discord_adv_settings', 'ets_discord_save_adv_settings' ); ?>
   <table class="form-table" role="presentation">
 	<tbody>
-  <tr>
-		<th scope="row"><?php echo __( 'Shortcode', 'pmpro-discord-add-on' ); ?></th>
-		<td> <fieldset>
-		[discord_connect_button]
-    <br/>
-    <small><?php echo __( ' Using the shortcode [discord_connect_button] on any page, anyone can join the website discord server by authentication via member discord account. New members will get default role if selected in the setting.', 'pmpro-discord-add-on' ); ?></small>
-		</fieldset></td>
-	  </tr>
+	<tr>
+    <th scope="row"><?php echo __( 'Shortcode', 'pmpro-discord-add-on' ); ?></th>
+    <td> <fieldset>
+        [discord_connect_button]
+        <br/>
+        <small><?php echo __( 'Using the shortcode [discord_connect_button] on any page, anyone can join the website Discord server by authenticating via their Discord account. New members will get the default role if selected in the settings.', 'pmpro-discord-add-on' ); ?></small>
+    </fieldset></td>
+</tr>
+<tr>
+    <th scope="row"><?php echo __( 'Shortcode', 'pmpro-discord-add-on' ); ?></th>
+    <td> <fieldset>
+        [discord_user_info]
+        <br/>
+        <small><?php echo __( 'The [discord_user_info] shortcode displays the current user\'s WordPress account name, Discord username, and any roles assigned to them. This information is styled to mimic Discord\'s role display format.', 'pmpro-discord-add-on' ); ?></small>
+    </fieldset></td>
+</tr>
+
   <tr>
 		<th scope="row"><?php echo __( 'Use rich embed messaging feature?', 'pmpro-discord-add-on' ); ?></th>
 		<td> <fieldset>

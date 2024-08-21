@@ -526,3 +526,49 @@ div.ets-pmpro-discord-review-notice div.ets-pmpro-discord-notice-content img{
   border-radius: 50%;
   margin-left: 15px;
 }
+
+.discord-user-info {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-width: 400px;
+  margin: 20px 0;
+  font-family: Arial, sans-serif;
+}
+
+.discord-user-info p {
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.discord-user-info strong {
+  color: #333;
+  font-weight: bold;
+}
+.discord-role {
+  display: inline-flex;
+  align-items: center;
+  margin: 5px 0;
+  background-color: #232528;
+  color: #BBBEC1;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-radius: 5%;
+}
+
+
+.discord-role i {
+  display: inline-block;
+  width: 12px; 
+  height: 12px; 
+  border-radius: 50%;
+  margin-right: 8px;
+  background-color: #7289DA; 
+}
+
+.discord-role span {
+  font-size: 14px; 
+  color: #ffffff; 
+}
+
