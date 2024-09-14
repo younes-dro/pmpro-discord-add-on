@@ -449,6 +449,8 @@ class PMPro_Discord_API {
 		);
 		$guild_response         = wp_remote_post( $guilds_memeber_api_url, $guild_args );
 
+		$response_arr = json_decode( wp_remote_retrieve_body( $guild_response ), true );
+
 		ets_pmpro_discord_log_api_response( $user_id, $guilds_memeber_api_url, $guild_args, $guild_response );
 		if ( ets_pmpro_discord_check_api_errors( $guild_response ) ) {
 
@@ -459,6 +461,7 @@ class PMPro_Discord_API {
 		}
 
 		update_user_meta( $user_id, '_ets_pmpro_discord_role_id', $discord_role );
+
 		if ( $discord_role && $discord_role != 'none' && isset( $user_id ) ) {
 			$this->put_discord_role_api( $user_id, $discord_role );
 		}
@@ -635,7 +638,13 @@ class PMPro_Discord_API {
 							wp_set_auth_cookie( $user_id, false, '', '' );
 							wp_signon( $credentials, '' );
 							$discord_user_id = sanitize_text_field( trim( get_user_meta( $user_id, '_ets_pmpro_discord_user_id', true ) ) );
-							$this->add_discord_member_in_guild( $discord_user_id, $user_id, $access_token );
+
+							//Do not call add member to guild if the member is connected via discord, check for usermeta.
+							$last_joined_date = trim( get_user_meta( $user_id, '_ets_pmpro_discord_join_date', true) );
+
+							if(!$last_joined_date){
+								$this->add_discord_member_in_guild( $discord_user_id, $user_id, $access_token );
+							}
 							if ( $_COOKIE['ets_discord_page'] ) {
 								wp_safe_redirect( urldecode_deep( $_COOKIE['ets_discord_page'] ) );
 								exit();
@@ -771,6 +780,7 @@ class PMPro_Discord_API {
 		delete_user_meta( $user_id, '_ets_pmpro_discord_default_role_id' );
 		delete_user_meta( $user_id, '_ets_pmpro_discord_username' );
 		delete_user_meta( $user_id, '_ets_pmpro_discord_expires_in' );
+		delete_user_meta( $user_id, '_ets_pmpro_discord_join_date' );
 
 	}
 
