@@ -1,3 +1,7 @@
+= 1.2.21 =
+- Implemented Single Sign-On (SSO) feature with Discord - allowing users to authenticate via the "Connect with Discord" button without needing to manually create an account if one already exists
+- Added logic to check if a member has already been added to the Discord guild to prevent duplicate additions - optimizing role management and avoiding unnecessary API calls
+
 = 1.2.20 =
 - Added handling for cases where Discord user email does not exist, ensuring a temporary email is used.
 - Implemented the [discord_user_info] shortcode to display the current user's WordPress account name, Discord username, and roles, styled to match Discord's role display format.
