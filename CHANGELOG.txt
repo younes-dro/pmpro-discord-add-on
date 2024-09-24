@@ -1,3 +1,6 @@
+= 1.2.22 =
+- Fixed issue with exceeding tag limit in plugin's metadata to comply with WordPress.org requirements.
+
 = 1.2.21 =
 - Implemented Single Sign-On (SSO) feature with Discord - allowing users to authenticate via the "Connect with Discord" button without needing to manually create an account if one already exists
 - Added logic to check if a member has already been added to the Discord guild to prevent duplicate additions - optimizing role management and avoiding unnecessary API calls

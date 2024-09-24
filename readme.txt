@@ -1,13 +1,13 @@
 === Unlock Exclusive Discord Access: Introducing the Free PMPro-Discord Addon — Elevate Your Community Engagement! ===
 Contributors: expresstechsoftware, webbdeveloper, sunnysoni, strangerstudios 
-Tags: Discord, Talk, Video Chat, Hang Out, Friends, Memberships, discord role management
+Tags: discord, communities, membership, pmpro, WordPress.
 Donate link: https://paypal.me/supportets
 Author URI: https://www.expresstechsoftwares.com
 Author: ExpressTech Software Solutions Pvt. Ltd.
 Requires at least: 4.7
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 1.2.21
+Stable tag: 1.2.22
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
