@@ -4,6 +4,7 @@
  *
  * @package WP-Background-Processing
  */
+
 /*
 Library URI: https://github.com/deliciousbrains/wp-background-processing/blob/fbbc56f2480910d7959972ec9ec0819a13c6150a/classes/wp-async-request.php
 Author: Delicious Brains Inc.
@@ -27,7 +28,6 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 		 * (default value: 'wp')
 		 *
 		 * @var string
-		 * @access protected
 		 */
 		protected $prefix = 'wp';
 
@@ -37,7 +37,6 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 		 * (default value: 'async_request')
 		 *
 		 * @var string
-		 * @access protected
 		 */
 		protected $action = 'async_request';
 
@@ -45,7 +44,6 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 		 * Identifier
 		 *
 		 * @var mixed
-		 * @access protected
 		 */
 		protected $identifier;
 
@@ -55,7 +53,6 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 		 * (default value: array())
 		 *
 		 * @var array
-		 * @access protected
 		 */
 		protected $data = array();
 
@@ -104,10 +101,17 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 				return $this->query_args;
 			}
 
-			return array(
+			$args = array(
 				'action' => $this->identifier,
 				'nonce'  => wp_create_nonce( $this->identifier ),
 			);
+
+			/**
+			 * Filters the post arguments used during an async request.
+			 *
+			 * @param array $url
+			 */
+			return apply_filters( $this->identifier . '_query_args', $args );
 		}
 
 		/**
@@ -120,7 +124,14 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 				return $this->query_url;
 			}
 
-			return admin_url( 'admin-ajax.php' );
+			$url = admin_url( 'admin-ajax.php' );
+
+			/**
+			 * Filters the post arguments used during an async request.
+			 *
+			 * @param string $url
+			 */
+			return apply_filters( $this->identifier . '_query_url', $url );
 		}
 
 		/**
@@ -133,13 +144,20 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 				return $this->post_args;
 			}
 
-			return array(
+			$args = array(
 				'timeout'   => 0.01,
 				'blocking'  => false,
 				'body'      => $this->data,
 				'cookies'   => $_COOKIE,
 				'sslverify' => apply_filters( 'https_local_ssl_verify', false ),
 			);
+
+			/**
+			 * Filters the post arguments used during an async request.
+			 *
+			 * @param array $args
+			 */
+			return apply_filters( $this->identifier . '_post_args', $args );
 		}
 
 		/**
@@ -148,7 +166,7 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 		 * Check for correct nonce and pass to handler.
 		 */
 		public function maybe_handle() {
-			// Don't lock up other requests while processing
+			// Don't lock up other requests while processing.
 			session_write_close();
 
 			check_ajax_referer( $this->identifier, 'nonce' );

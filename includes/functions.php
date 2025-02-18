@@ -181,16 +181,24 @@ function ets_pmpro_discord_count_of_hooks_failures( $hook ) {
 }
 
 /**
- * Get pmpro current level id
+ * Retrieve the current membership level IDs for a user in PMPro.
  *
- * @param INT $user_id
- * @return INT|NULL $curr_level_id
+ * This function returns an array of membership level IDs associated with the given user.
+ * If the user has no active memberships, it returns null.
+ *
+ * @param int $user_id The ID of the user whose membership levels should be retrieved.
+ * @return array|null An array of membership level IDs if available, or null if none exist.
+ *
+ * @uses pmpro_getMembershipLevelsForUser() Retrieves all membership levels for a given user.
  */
-function ets_pmpro_discord_get_current_level_id( $user_id ) {
-	$membership_level = pmpro_getMembershipLevelForUser( $user_id );
-	if ( $membership_level ) {
-		$curr_level_id = sanitize_text_field( trim( $membership_level->ID ) );
-		return $curr_level_id;
+function ets_pmpro_discord_get_current_level_ids( $user_id ) {
+	$membership_levels = pmpro_getMembershipLevelsForUser( $user_id );
+	$curr_level_ids    = array();
+	if ( $membership_levels ) {
+		foreach ( $membership_levels as $membership_level ) {
+			$curr_level_ids[] = sanitize_text_field( trim( $membership_level->id ) );
+		}
+		return $curr_level_ids;
 	} else {
 		return null;
 	}
@@ -320,3 +328,32 @@ function ets_pmpro_discord_allowed_html( $html_message ) {
 	return wp_kses( $html_message, $allowed_html );
 }
 
+/**
+ * Remove a specific Discord role ID from a user's metadata.
+ *
+ * This function updates the '_ets_pmpro_discord_role_ids' user meta field
+ * by removing a given role ID from the stored list of role IDs.
+ *
+ * @param int    $user_id The ID of the user whose role is being removed.
+ * @param string $role_id_to_remove The Discord role ID to be removed.
+ *
+ * @return void
+ *
+ * @uses get_user_meta() Retrieves the stored role IDs for the user.
+ * @uses update_user_meta() Updates the stored role IDs after removal.
+ */
+function ets_remove_discord_role_from_user_meta( $user_id, $role_id_to_remove ) {
+	$meta_value     = get_user_meta( $user_id, '_ets_pmpro_discord_role_ids', true );
+	$role_ids_array = maybe_unserialize( $meta_value );
+
+	if ( is_array( $role_ids_array ) ) {
+
+		$key = array_search( $role_id_to_remove, $role_ids_array );
+		if ( $key !== false ) {
+			unset( $role_ids_array[ $key ] );
+		}
+		$updated_meta_value = serialize( $role_ids_array );
+
+		update_user_meta( $user_id, '_ets_pmpro_discord_role_ids', $updated_meta_value );
+	}
+}

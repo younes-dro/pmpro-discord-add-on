@@ -2,7 +2,9 @@
 
 namespace Action_Scheduler\Migration;
 
-use Action_Scheduler\WP_CLI\Migration_Command;
+use ActionScheduler_DataController;
+use ActionScheduler_LoggerSchema;
+use ActionScheduler_StoreSchema;
 use Action_Scheduler\WP_CLI\ProgressBar;
 
 /**
@@ -17,18 +19,39 @@ use Action_Scheduler\WP_CLI\ProgressBar;
  * @codeCoverageIgnore
  */
 class Controller {
+	/**
+	 * Instance.
+	 *
+	 * @var self
+	 */
 	private static $instance;
 
-	/** @var Action_Scheduler\Migration\Scheduler */
+	/**
+	 * Scheduler instance.
+	 *
+	 * @var Action_Scheduler\Migration\Scheduler
+	 */
 	private $migration_scheduler;
 
-	/** @var string */
+	/**
+	 * Class name of the store object.
+	 *
+	 * @var string
+	 */
 	private $store_classname;
 
-	/** @var string */
+	/**
+	 * Class name of the logger object.
+	 *
+	 * @var string
+	 */
 	private $logger_classname;
 
-	/** @var bool */
+	/**
+	 * Flag to indicate migrating custom store.
+	 *
+	 * @var bool
+	 */
 	private $migrate_custom_store;
 
 	/**
@@ -87,12 +110,30 @@ class Controller {
 	}
 
 	/**
-	 * Set up the background migration process
+	 * Set up the background migration process.
 	 *
 	 * @return void
 	 */
 	public function schedule_migration() {
-		if ( \ActionScheduler_DataController::is_migration_complete() || $this->migration_scheduler->is_migration_scheduled() ) {
+		$logging_tables = new ActionScheduler_LoggerSchema();
+		$store_tables   = new ActionScheduler_StoreSchema();
+
+		/*
+		 * In some unusual cases, the expected tables may not have been created. In such cases
+		 * we do not schedule a migration as doing so will lead to fatal error conditions.
+		 *
+		 * In such cases the user will likely visit the Tools > Scheduled Actions screen to
+		 * investigate, and will see appropriate messaging (this step also triggers an attempt
+		 * to rebuild any missing tables).
+		 *
+		 * @see https://github.com/woocommerce/action-scheduler/issues/653
+		 */
+		if (
+			ActionScheduler_DataController::is_migration_complete()
+			|| $this->migration_scheduler->is_migration_scheduled()
+			|| ! $store_tables->tables_exist()
+			|| ! $logging_tables->tables_exist()
+		) {
 			return;
 		}
 
@@ -122,7 +163,7 @@ class Controller {
 			}
 		}
 
-		return apply_filters( 'action_scheduler/migration_config', $config );
+		return apply_filters( 'action_scheduler/migration_config', $config ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	}
 
 	/**
@@ -151,15 +192,13 @@ class Controller {
 		add_action( 'init', array( $this, 'maybe_hook_migration' ) );
 		add_action( 'wp_loaded', array( $this, 'schedule_migration' ) );
 
-		// Action Scheduler may be displayed as a Tools screen or WooCommerce > Status administration screen
+		// Action Scheduler may be displayed as a Tools screen or WooCommerce > Status administration screen.
 		add_action( 'load-tools_page_action-scheduler', array( $this, 'hook_admin_notices' ), 10, 0 );
 		add_action( 'load-woocommerce_page_wc-status', array( $this, 'hook_admin_notices' ), 10, 0 );
 	}
 
 	/**
 	 * Possibly hook the migration scheduler action.
-	 *
-	 * @author Jeremy Pry
 	 */
 	public function maybe_hook_migration() {
 		if ( ! $this->allow_migration() || \ActionScheduler_DataController::is_migration_complete() ) {
