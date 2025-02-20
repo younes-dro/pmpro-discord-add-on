@@ -143,7 +143,7 @@ class Ets_Pmpro_Admin_Setting {
 				if ( is_array( $ets_pmpor_discord_role_mapping ) && array_key_exists( 'pmpro_level_id_' . $curr_level_id, $ets_pmpor_discord_role_mapping ) ) {
 					$mapped_role_id = $ets_pmpor_discord_role_mapping[ 'pmpro_level_id_' . $curr_level_id ];
 					if ( array_key_exists( $mapped_role_id, $all_roles ) ) {
-						$mapped_role_name .= '<span> <i style="background-color:#' . dechex( $roles_color[ $mapped_role_id ] ) . '"></i>' . $all_roles[ $mapped_role_id ] . '</span>';
+						$mapped_role_name .= '<span class="discord-role"> <i style="background-color:#' . dechex( $roles_color[ $mapped_role_id ] ) . '"></i>' . $all_roles[ $mapped_role_id ] . '</span>';
 					}
 				}
 			}
@@ -151,7 +151,7 @@ class Ets_Pmpro_Admin_Setting {
 
 		$default_role_name = '';
 		if ( $default_role != 'none' && is_array( $all_roles ) && array_key_exists( $default_role, $all_roles ) ) {
-						$default_role_name = '<span> <i style="background-color:#' . dechex( $roles_color[ $default_role ] ) . '">' . $all_roles[ $default_role ] . '</i></span>';
+						$default_role_name = '<span class="discord-role"> <i style="background-color:#' . dechex( $roles_color[ $default_role ] ) . '"></i>' . $all_roles[ $default_role ] . '</span>';
 		}
 		$pmpro_connecttodiscord_btn = '';
 		if ( Check_saved_settings_status() ) {
@@ -233,7 +233,7 @@ class Ets_Pmpro_Admin_Setting {
 				if ( is_array( $ets_pmpor_discord_role_mapping ) && array_key_exists( 'pmpro_level_id_' . $curr_level_id, $ets_pmpor_discord_role_mapping ) ) {
 					$mapped_role_id = $ets_pmpor_discord_role_mapping[ 'pmpro_level_id_' . $curr_level_id ];
 					if ( array_key_exists( $mapped_role_id, $all_roles ) ) {
-						$mapped_role_name .= '<span> <i style="background-color:#' . dechex( $roles_color[ $mapped_role_id ] ) . '"></i>' . $all_roles[ $mapped_role_id ] . '</span>';
+						$mapped_role_name .= '<span class="discord-role"> <i style="background-color:#' . dechex( $roles_color[ $mapped_role_id ] ) . '"></i>' . $all_roles[ $mapped_role_id ] . '</span>';
 					}
 				}
 			}
